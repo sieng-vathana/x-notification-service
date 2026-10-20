@@ -1,0 +1,24 @@
+server:
+  port: ${SERVER_PORT:8085}
+
+spring:
+  application:
+    name: x-notification-service
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      # Every instance holds its own browser connections, so each one reads every event.
+      group-id: x-notification-${random.uuid}
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+jwt:
+  # The same secret the BFF signs access tokens with.
+  secret: ${JWT_SECRET:x-local-jwt-secret-change-me-32chars}
+
+x:
+  realtime:
+    topic: x.realtime
+    path: /ws/realtime
+    ping-seconds: 25
